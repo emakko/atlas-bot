@@ -48,6 +48,8 @@ Rules:
 - Keep the description short (2–5 words) and descriptive.
 - If there is an issue, you may add its number: `fix/42-mensa-timeout`.
 - One topic per branch. Delete the branch after it is merged.
+- This applies to branches created by Claude Code too. Don't use tool-generated
+  names like `claude/<random-name>`; pick the matching prefix above instead.
 
 ## Before opening a pull request
 
