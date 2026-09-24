@@ -13,7 +13,6 @@ def test_bundled_po_documents():
     assert set(catalog.po_documents) == {"new", "old"}
     assert catalog.po_documents["new"].url.endswith("mhb_ws_26_27_po_2026.pdf")
     assert catalog.po_documents["old"].url.endswith("8-34-5-ws23.pdf")
-    assert catalog.po_overview == "https://www.uni-due.de/bmse/bsc-ordnungen.php"
 
 
 def test_po_choices_match_mensa_style():
@@ -24,16 +23,19 @@ def test_po_embed_new():
     catalog = load_catalog(ROOT / "sources.yaml")
     embed = po_embed(catalog, "new")
     assert embed.title == "Neu – PO 2026 – B.Sc. Software Engineering"
-    assert embed.url.endswith("mhb_ws_26_27_po_2026.pdf")
-    assert "mhb_ws_26_27_po_2026.pdf" in embed.description
-    assert "bsc-ordnungen.php" in embed.fields[0].value
+    assert embed.description == (
+        "[PO 2026 – Modulhandbuch WS 26/27]"
+        "(https://www.uni-due.de/imperia/md/images/informatik/bmse/mhb_ws_26_27_po_2026.pdf)"
+    )
+    # Exactly one link: no linked title, no extra fields.
+    assert embed.url is None and not embed.fields
 
 
 def test_po_embed_old():
     catalog = load_catalog(ROOT / "sources.yaml")
     embed = po_embed(catalog, "old")
-    assert embed.url.endswith("8-34-5-ws23.pdf")
     assert "8-34-5-ws23.pdf" in embed.description
+    assert embed.url is None and not embed.fields
 
 
 def test_po_embed_missing_config(tmp_path):
