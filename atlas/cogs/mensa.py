@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import logging
 from collections import defaultdict
-from datetime import datetime, timedelta
 from typing import TYPE_CHECKING
-from zoneinfo import ZoneInfo
 
 import discord
 from discord import app_commands
@@ -18,37 +16,55 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
-BERLIN = ZoneInfo("Europe/Berlin")
 CAMPUS_CHOICES = [app_commands.Choice(name=c.label, value=key) for key, c in mensa.CAMPUSES.items()]
-DAY_CHOICES = [
-    app_commands.Choice(name="heute", value=0),
-    app_commands.Choice(name="morgen", value=1),
-    app_commands.Choice(name="übermorgen", value=2),
-]
 
 
 def format_price(value: float | None) -> str:
     return f"{value:.2f} €".replace(".", ",") if value is not None else ""
 
 
+def meal_line(meal: mensa.Meal) -> str:
+    line = f"• {meal.name}"
+    price = format_price(meal.student_price)
+    if price:
+        line += f" — **{price}**"
+    if meal.diet:
+        line += f"\n  {' · '.join(meal.diet)}"
+    return line
+
+
+def menu_embed(site: mensa.Campus, menu: mensa.Menu) -> discord.Embed:
+    title = site.label + (f" – {menu.date_label}" if menu.date_label else "")
+    embed = discord.Embed(title=title[:256], url=site.url, color=EMBED_COLOR)
+
+    by_category: dict[str, list[mensa.Meal]] = defaultdict(list)
+    for meal in menu.meals:
+        by_category[meal.category].append(meal)
+
+    # Leave room for the week-plan field (Discord allows 25 fields per embed).
+    for category, meals in list(by_category.items())[:24]:
+        value = "\n".join(meal_line(m) for m in meals)
+        embed.add_field(name=category[:256], value=value[:1024], inline=False)
+
+    if menu.week_pdfs:
+        links = " · ".join(f"[{label}]({url})" for label, url in menu.week_pdfs.items())
+        embed.add_field(name="Wochenplan (PDF)", value=links, inline=False)
+    embed.set_footer(text="Studierendenpreise · Studierendenwerk Essen-Duisburg")
+    return embed
+
+
 class Mensa(commands.Cog):
     def __init__(self, bot: AtlasBot) -> None:
         self.bot = bot
 
-    @app_commands.command(name="mensa", description="Menu of the Mensa at Campus Essen or Duisburg")
-    @app_commands.describe(campus="Which Mensa", day="Which day")
-    @app_commands.choices(campus=CAMPUS_CHOICES, day=DAY_CHOICES)
-    async def mensa_cmd(
-        self,
-        interaction: discord.Interaction,
-        campus: app_commands.Choice[str],
-        day: app_commands.Choice[int] | None = None,
-    ) -> None:
+    @app_commands.command(name="mensa", description="Today's menu of the Mensa at Campus Essen or Duisburg")
+    @app_commands.describe(campus="Which Mensa")
+    @app_commands.choices(campus=CAMPUS_CHOICES)
+    async def mensa_cmd(self, interaction: discord.Interaction, campus: app_commands.Choice[str]) -> None:
         site = mensa.CAMPUSES[campus.value]
-        target = (datetime.now(BERLIN) + timedelta(days=day.value if day else 0)).date()
         await interaction.response.defer(thinking=True)
         try:
-            meals = await mensa.fetch_menu(self.bot.http_session, site, target)
+            menu = await mensa.fetch_menu(self.bot.http_session, site)
         except Exception as exc:
             log.warning("Loading menu for %s failed: %r", campus.value, exc)
             await interaction.followup.send(
@@ -56,26 +72,12 @@ class Mensa(commands.Cog):
             )
             return
 
-        title = f"{site.label} – {target.strftime('%d.%m.%Y')}"
-        if not meals:
+        if not menu.meals:
             await interaction.followup.send(
-                f"**{title}**\nNo menu published for this day (closed or not yet available).\n{site.url}"
+                f"**{site.label}**: no menu published right now (closed or not yet available).\n{site.url}"
             )
             return
-
-        by_category: dict[str, list[mensa.Meal]] = defaultdict(list)
-        for meal in meals:
-            by_category[meal.category].append(meal)
-
-        embed = discord.Embed(title=title[:256], url=site.url, color=EMBED_COLOR)
-        for category, items in list(by_category.items())[:25]:
-            lines = []
-            for m in items:
-                price = format_price(m.student_price)
-                lines.append(f"• {m.name}" + (f" — **{price}**" if price else ""))
-            embed.add_field(name=category[:256], value="\n".join(lines)[:1024], inline=False)
-        embed.set_footer(text="Student prices · Studierendenwerk Essen-Duisburg")
-        await interaction.followup.send(embed=embed)
+        await interaction.followup.send(embed=menu_embed(site, menu))
 
 
 async def setup(bot: AtlasBot) -> None:

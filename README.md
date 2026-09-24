@@ -14,7 +14,7 @@ channels, shows Mensa menus, and keeps the important study links close at hand.
 | `/news subscribe <source> [channel] [role]` | Auto-post new items into a channel, optionally pinging a role *(Manage Server)* |
 | `/news unsubscribe <source> [channel]` | Stop auto-posting *(Manage Server)* |
 | `/news subscriptions` | Show this server's subscriptions |
-| `/mensa <Essen\|Duisburg> [day]` | Menu of the Mensa at Campus Essen or Duisburg with student prices (from [stw-edu.de](https://www.stw-edu.de/gastronomie/speisen/)) |
+| `/mensa <Essen\|Duisburg>` | Today's menu of the Mensa at Campus Essen or Duisburg with student prices and diet tags, plus links to the weekly PDF plans (from [stw-edu.de](https://www.stw-edu.de/gastronomie/speisen/)) |
 | `/links` | Quick links: paluno, SSE, SE chair, Informatik, Moodle, HISinOne, ZIM, UB, … |
 
 ### News sources
