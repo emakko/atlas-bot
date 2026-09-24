@@ -28,18 +28,9 @@ class Link:
 
 
 @dataclass(frozen=True)
-class MensaPoint:
-    name: str
-    lat: float
-    lng: float
-
-
-@dataclass(frozen=True)
 class Catalog:
     sources: dict[str, Source]
     links: tuple[Link, ...] = ()
-    mensa_points: tuple[MensaPoint, ...] = ()
-    mensa_radius_km: float = 3.0
 
 
 @dataclass(frozen=True)
@@ -74,18 +65,7 @@ def load_catalog(path: Path) -> Catalog:
         sources[src.key] = src
 
     links = tuple(Link(name=l["name"], url=l["url"]) for l in raw.get("links", []))
-
-    mensa = raw.get("mensa", {}) or {}
-    points = tuple(
-        MensaPoint(name=p["name"], lat=float(p["lat"]), lng=float(p["lng"]))
-        for p in mensa.get("search_points", [])
-    )
-    return Catalog(
-        sources=sources,
-        links=links,
-        mensa_points=points,
-        mensa_radius_km=float(mensa.get("radius_km", 3.0)),
-    )
+    return Catalog(sources=sources, links=links)
 
 
 def load_settings() -> Settings:
