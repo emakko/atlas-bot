@@ -14,8 +14,7 @@ channels, shows Mensa menus, and keeps the important study links close at hand.
 | `/news subscribe <source> [channel] [role]` | Auto-post new items into a channel, optionally pinging a role *(Manage Server)* |
 | `/news unsubscribe <source> [channel]` | Stop auto-posting *(Manage Server)* |
 | `/news subscriptions` | Show this server's subscriptions |
-| `/mensa canteens` | Canteens near Campus Essen / Duisburg (via [OpenMensa](https://openmensa.org)) |
-| `/mensa menu <canteen> [day]` | Today's / tomorrow's menu with student prices |
+| `/mensa <Essen\|Duisburg>` | Today's menu of the Mensa at Campus Essen or Duisburg with student prices and diet tags, plus links to the weekly PDF plans (from [stw-edu.de](https://www.stw-edu.de/gastronomie/speisen/)) |
 | `/links` | Quick links: paluno, SSE, SE chair, Informatik, Moodle, HISinOne, ZIM, UB, … |
 
 ### News sources
@@ -77,7 +76,7 @@ docker run -d --name atlas --env-file .env -v atlas-data:/app/data atlas-bot
 | `ATLAS_DEV_GUILD_ID` | – | sync commands to one server instantly |
 | `ATLAS_POLL_MINUTES` | `15` | how often subscribed sources are checked |
 | `ATLAS_DB_PATH` | `data/atlas.db` | SQLite file for subscriptions and seen items |
-| `ATLAS_SOURCES_FILE` | `sources.yaml` | news sources, links, Mensa search points |
+| `ATLAS_SOURCES_FILE` | `sources.yaml` | news sources and links |
 
 ## Development
 
@@ -91,5 +90,5 @@ Layout:
 - `atlas/feeds.py`: fetches sources and parses RSS and HTML pages
 - `atlas/poller.py`: finds new items and fans them out to subscribed channels
 - `atlas/storage.py`: SQLite storage for subscriptions and seen items
-- `atlas/mensa.py`: OpenMensa client
+- `atlas/mensa.py`: menu parser for stw-edu.de (Mensa Campus Essen and Duisburg)
 - `atlas/cogs/`: the Discord slash commands (`news`, `mensa`, `links`)
