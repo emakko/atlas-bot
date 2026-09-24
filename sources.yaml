@@ -133,14 +133,3 @@ links:
     url: https://www.uni-due.de/ub/
   - name: Mensa / Studierendenwerk
     url: https://www.stw-edu.de/gastronomie/standorte/
-
-# Used by /mensa to find canteens via OpenMensa
-mensa:
-  search_points:
-    - name: Campus Essen
-      lat: 51.4637
-      lng: 7.0045
-    - name: Campus Duisburg
-      lat: 51.4280
-      lng: 6.8015
-  radius_km: 3
