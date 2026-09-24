@@ -26,7 +26,7 @@ async def test_extensions_load_and_register_commands():
         names = {c.qualified_name for c in bot.tree.walk_commands()}
         assert {
             "news sources", "news latest", "news subscribe", "news unsubscribe",
-            "news subscriptions", "mensa", "links",
+            "news subscriptions", "mensa", "links", "po",
         } <= names
         # Payloads must be valid for Discord (names, option limits, ...).
         for cmd in bot.tree.get_commands():

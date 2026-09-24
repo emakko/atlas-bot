@@ -16,6 +16,7 @@ channels, shows Mensa menus, and keeps the important study links close at hand.
 | `/news subscriptions` | Show this server's subscriptions |
 | `/mensa <Essen\|Duisburg>` | Today's menu of the Mensa at Campus Essen or Duisburg with student prices and diet tags, plus links to the weekly PDF plans (from [stw-edu.de](https://www.stw-edu.de/gastronomie/speisen/)) |
 | `/links` | Quick links: paluno, SSE, SE chair, Informatik, Moodle, HISinOne, ZIM, UB, … |
+| `/po [neu\|alt]` | Prüfungsordnung / Modulhandbuch for the B.Sc. Software Engineering (PO 2026 and PO 2023), links configured in `sources.yaml` |
 
 ### News sources
 
@@ -76,7 +77,7 @@ docker run -d --name atlas --env-file .env -v atlas-data:/app/data atlas-bot
 | `ATLAS_DEV_GUILD_ID` | – | sync commands to one server instantly |
 | `ATLAS_POLL_MINUTES` | `15` | how often subscribed sources are checked |
 | `ATLAS_DB_PATH` | `data/atlas.db` | SQLite file for subscriptions and seen items |
-| `ATLAS_SOURCES_FILE` | `sources.yaml` | news sources and links |
+| `ATLAS_SOURCES_FILE` | `sources.yaml` | news sources, links and PO documents |
 
 ## Development
 
