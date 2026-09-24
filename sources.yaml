@@ -133,3 +133,14 @@ links:
     url: https://www.uni-due.de/ub/
   - name: Mensa / Studierendenwerk
     url: https://www.stw-edu.de/gastronomie/standorte/
+
+# Shown by /po (B.Sc. Software Engineering). Keys: new, old
+po:
+  overview: https://www.uni-due.de/bmse/bsc-ordnungen.php
+  documents:
+    new:
+      name: PO 2026 – Modulhandbuch WS 26/27
+      url: https://www.uni-due.de/imperia/md/images/informatik/bmse/mhb_ws_26_27_po_2026.pdf
+    old:
+      name: PO 2023 – Prüfungsordnung (Bereinigte Sammlung 8.34.5)
+      url: https://www.uni-due.de/imperia/md/content/zentralverwaltung/bereinigte_sammlung/8-34-5-ws23.pdf

@@ -13,7 +13,7 @@ and setup.
 - `atlas/bot.py`: `AtlasBot`, loads the cogs and syncs slash commands
 - `atlas/cogs/`: slash commands (`news`, `mensa`, `links`)
 - `atlas/feeds.py`, `atlas/poller.py`, `atlas/storage.py`, `atlas/mensa.py`: core logic
-- `sources.yaml`: news sources and links
+- `sources.yaml`: news sources, links and PO documents (`/po`)
 - `tests/`: pytest suite (`asyncio_mode = auto`)
 
 ## Commands

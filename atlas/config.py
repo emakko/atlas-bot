@@ -27,10 +27,15 @@ class Link:
     url: str
 
 
+PO_VERSIONS = ("new", "old")
+
+
 @dataclass(frozen=True)
 class Catalog:
     sources: dict[str, Source]
     links: tuple[Link, ...] = ()
+    po_documents: dict[str, Link] = field(default_factory=dict)
+    po_overview: str | None = None
 
 
 @dataclass(frozen=True)
@@ -65,7 +70,20 @@ def load_catalog(path: Path) -> Catalog:
         sources[src.key] = src
 
     links = tuple(Link(name=l["name"], url=l["url"]) for l in raw.get("links", []))
-    return Catalog(sources=sources, links=links)
+
+    po = raw.get("po", {}) or {}
+    po_documents = {}
+    for version, doc in (po.get("documents", {}) or {}).items():
+        if version not in PO_VERSIONS:
+            raise ValueError(f"po: unknown version {version!r} (expected one of {PO_VERSIONS})")
+        po_documents[version] = Link(name=doc["name"], url=doc["url"])
+
+    return Catalog(
+        sources=sources,
+        links=links,
+        po_documents=po_documents,
+        po_overview=po.get("overview"),
+    )
 
 
 def load_settings() -> Settings:
