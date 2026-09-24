@@ -1,0 +1,146 @@
+# News sources Atlas can post to Discord channels.
+#
+# type: rss   -> a regular RSS/Atom feed
+# type: html  -> a web page without a feed; Atlas watches it for new links
+#
+# Optional per source:
+#   group:          heading used by /news sources (default: Other)
+#   keywords:       only keep items whose title/summary contains one of these (case-insensitive)
+#   link_pattern:   (html only) regex a link URL must match to count as a news item
+#   min_title_len:  (html only) ignore links with shorter text (filters navigation links)
+#
+# Central UDE feeds are listed at https://www.uni-due.de/de/presse/feeds.php
+
+sources:
+  # --- Software Engineering -----------------------------------------------
+  - key: paluno
+    group: Software Engineering
+    name: paluno – Ruhr Institute for Software Technology
+    type: html
+    url: https://paluno.uni-due.de/aktuelles/alle-news-insights
+    link_pattern: '^https?://paluno\.uni-due\.de/'
+    min_title_len: 30
+
+  - key: sse
+    group: Software Engineering
+    name: Software Systems Engineering (Prof. Pohl)
+    type: html
+    url: https://sse.uni-due.de/aktuelles/alle-news-insights
+    link_pattern: '^https?://sse\.uni-due\.de/'
+    min_title_len: 30
+
+  - key: se-chair
+    group: Software Engineering
+    name: Lehrstuhl für Software Engineering
+    type: html
+    url: https://se.wiwi.uni-due.de/news/
+    link_pattern: '^https?://se\.wiwi\.uni-due\.de/'
+    min_title_len: 30
+
+  - key: softec
+    group: Software Engineering
+    name: softec – Software Engineering & IT-Services (RIS)
+    type: html
+    url: https://softec.ris.uni-due.de/news/aktuelle-meldungen/
+    link_pattern: '^https?://softec\.ris\.uni-due\.de/'
+    min_title_len: 30
+
+  - key: ude-se
+    group: Software Engineering
+    name: UDE-Meldungen mit Software-/Informatik-Bezug
+    type: rss
+    url: https://www.uni-due.de/rss/aktuell.rss
+    keywords: &se_keywords
+      - Software
+      - paluno
+      - Softwaretechnik
+      - Softwaretechnologie
+      - Requirements Engineering
+      - DevOps
+      - Programmier
+      - Hackathon
+      - Open Source
+      - Informatik
+
+  - key: ude-studium-se
+    group: Software Engineering
+    name: Studium-Meldungen mit Software-/Informatik-Bezug
+    type: rss
+    url: https://www.uni-due.de/rss/studium.rss
+    keywords: *se_keywords
+
+  # --- Informatik ---------------------------------------------------------
+  - key: informatik
+    group: Informatik
+    name: Fakultät für Informatik – News
+    type: html
+    url: https://www.uni-due.de/informatik/news_archiv
+    link_pattern: '^https?://www\.uni-due\.de/informatik/'
+    min_title_len: 20
+
+  # --- Whole university ---------------------------------------------------
+  - key: ude-studium
+    group: UDE
+    name: UDE – Studium & Lehre
+    type: rss
+    url: https://www.uni-due.de/rss/studium.rss
+
+  - key: ude-aktuell
+    group: UDE
+    name: UDE – Alle Meldungen
+    type: rss
+    url: https://www.uni-due.de/rss/aktuell.rss
+
+  - key: ude-forschung
+    group: UDE
+    name: UDE – Forschung
+    type: rss
+    url: https://www.uni-due.de/rss/forschung.rss
+
+  - key: ude-presse
+    group: UDE
+    name: UDE – Pressemitteilungen
+    type: rss
+    url: https://www.uni-due.de/rss/presse.rss
+
+  - key: ude-press-en
+    group: UDE
+    name: UDE – Press releases (English)
+    type: rss
+    url: https://www.uni-due.de/rss/pi_englisch.rss
+
+# Shown by /links
+links:
+  - name: paluno – Ruhr Institute for Software Technology
+    url: https://paluno.uni-due.de/
+  - name: Software Systems Engineering
+    url: https://sse.uni-due.de/
+  - name: SSE – Lehrveranstaltungen
+    url: https://sse.uni-due.de/studium/lehrveranstaltungen
+  - name: Lehrstuhl für Software Engineering
+    url: https://se.wiwi.uni-due.de/
+  - name: UDE-SE on GitHub
+    url: https://github.com/UDE-SE
+  - name: Fakultät für Informatik
+    url: https://www.uni-due.de/informatik/
+  - name: Moodle
+    url: https://moodle.uni-due.de/
+  - name: HISinOne (Campus-Portal)
+    url: https://campus.uni-due.de/
+  - name: ZIM (IT-Services)
+    url: https://www.uni-due.de/zim/
+  - name: Universitätsbibliothek
+    url: https://www.uni-due.de/ub/
+  - name: Mensa / Studierendenwerk
+    url: https://www.stw-edu.de/gastronomie/standorte/
+
+# Used by /mensa to find canteens via OpenMensa
+mensa:
+  search_points:
+    - name: Campus Essen
+      lat: 51.4637
+      lng: 7.0045
+    - name: Campus Duisburg
+      lat: 51.4280
+      lng: 6.8015
+  radius_km: 3
