@@ -16,7 +16,7 @@ channels, shows Mensa menus, and keeps the important study links close at hand.
 | `/news subscriptions` | Show this server's subscriptions |
 | `/mensa <Essen\|Duisburg>` | Today's menu of the Mensa at Campus Essen or Duisburg with student prices and diet tags, plus links to the weekly PDF plans (from [stw-edu.de](https://www.stw-edu.de/gastronomie/speisen/)) |
 | `/links` | Quick links: paluno, SSE, SE chair, Informatik, Moodle, HISinOne, ZIM, UB, … |
-| `/po [neu\|alt]` | Prüfungsordnung / Modulhandbuch for the B.Sc. Software Engineering (PO 2026 and PO 2023), links configured in `sources.yaml` |
+| `/po <Neu – PO 2026\|Alt – PO 2023>` | Prüfungsordnung / Modulhandbuch for the B.Sc. Software Engineering, links configured in `sources.yaml` |
 
 ### News sources
 
