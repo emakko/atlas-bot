@@ -6,14 +6,14 @@ Guidance for Claude Code (and humans) working in this repository.
 
 Atlas is a Discord bot (discord.py 2.x, Python 3.10+) for students at the
 Universität Duisburg-Essen. It posts news from RSS feeds and HTML pages, shows
-Mensa menus via OpenMensa, and serves study links. See `README.md` for features
+Mensa menus from stw-edu.de, and serves study links. See `README.md` for features
 and setup.
 
 - `atlas/__main__.py`: entry point (`python -m atlas`)
 - `atlas/bot.py`: `AtlasBot`, loads the cogs and syncs slash commands
 - `atlas/cogs/`: slash commands (`news`, `mensa`, `links`)
 - `atlas/feeds.py`, `atlas/poller.py`, `atlas/storage.py`, `atlas/mensa.py`: core logic
-- `sources.yaml`: news sources, links and Mensa search points
+- `sources.yaml`: news sources and links
 - `tests/`: pytest suite (`asyncio_mode = auto`)
 
 ## Commands
