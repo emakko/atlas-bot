@@ -12,23 +12,25 @@ from atlas.config import Catalog
 if TYPE_CHECKING:
     from atlas.bot import AtlasBot
 
-PO_CHOICES = [
-    app_commands.Choice(name="neu (PO 2026)", value="new"),
-    app_commands.Choice(name="alt (PO 2023)", value="old"),
-]
-PO_LABELS = {"new": "Neu", "old": "Alt"}
+PO_LABELS = {"new": "Neu – PO 2026", "old": "Alt – PO 2023"}
+PO_CHOICES = [app_commands.Choice(name=label, value=key) for key, label in PO_LABELS.items()]
 
 
-def po_embed(catalog: Catalog, version: str | None = None) -> discord.Embed:
-    """Links to the Prüfungsordnung documents, either one version or all of them."""
-    versions = [version] if version else list(PO_LABELS)
-    embed = discord.Embed(title="Prüfungsordnung – B.Sc. Software Engineering", color=EMBED_COLOR)
-    for key in versions:
-        doc = catalog.po_documents.get(key)
-        value = f"[{doc.name}]({doc.url})" if doc else "Not configured."
-        embed.add_field(name=PO_LABELS[key], value=value, inline=False)
+def po_embed(catalog: Catalog, version: str) -> discord.Embed:
+    """Link to the Prüfungsordnung document of one PO version."""
+    doc = catalog.po_documents.get(version)
+    embed = discord.Embed(
+        title=f"{PO_LABELS[version]} – B.Sc. Software Engineering",
+        url=doc.url if doc else None,
+        description=f"[{doc.name}]({doc.url})" if doc else "Not configured.",
+        color=EMBED_COLOR,
+    )
     if catalog.po_overview:
-        embed.description = f"[All PO documents and module handbooks]({catalog.po_overview})"
+        embed.add_field(
+            name="Alle Dokumente",
+            value=f"[Prüfungsordnungen & Modulhandbücher]({catalog.po_overview})",
+            inline=False,
+        )
     return embed
 
 
@@ -44,12 +46,10 @@ class Links(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="po", description="Prüfungsordnung / Modulhandbuch for B.Sc. Software Engineering")
-    @app_commands.describe(version="Old or new PO (default: both)")
+    @app_commands.describe(version="Which PO")
     @app_commands.choices(version=PO_CHOICES)
-    async def po(
-        self, interaction: discord.Interaction, version: app_commands.Choice[str] | None = None
-    ) -> None:
-        embed = po_embed(self.bot.settings.catalog, version.value if version else None)
+    async def po(self, interaction: discord.Interaction, version: app_commands.Choice[str]) -> None:
+        embed = po_embed(self.bot.settings.catalog, version.value)
         await interaction.response.send_message(embed=embed)
 
 
