@@ -35,7 +35,6 @@ class Catalog:
     sources: dict[str, Source]
     links: tuple[Link, ...] = ()
     po_documents: dict[str, Link] = field(default_factory=dict)
-    po_overview: str | None = None
 
 
 @dataclass(frozen=True)
@@ -82,7 +81,6 @@ def load_catalog(path: Path) -> Catalog:
         sources=sources,
         links=links,
         po_documents=po_documents,
-        po_overview=po.get("overview"),
     )
 
 

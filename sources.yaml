@@ -136,7 +136,6 @@ links:
 
 # Shown by /po (B.Sc. Software Engineering). Keys: new, old
 po:
-  overview: https://www.uni-due.de/bmse/bsc-ordnungen.php
   documents:
     new:
       name: PO 2026 – Modulhandbuch WS 26/27

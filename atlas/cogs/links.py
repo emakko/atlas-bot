@@ -17,21 +17,13 @@ PO_CHOICES = [app_commands.Choice(name=label, value=key) for key, label in PO_LA
 
 
 def po_embed(catalog: Catalog, version: str) -> discord.Embed:
-    """Link to the Prüfungsordnung document of one PO version."""
+    """A single link to the document of one PO version."""
     doc = catalog.po_documents.get(version)
-    embed = discord.Embed(
+    return discord.Embed(
         title=f"{PO_LABELS[version]} – B.Sc. Software Engineering",
-        url=doc.url if doc else None,
         description=f"[{doc.name}]({doc.url})" if doc else "Not configured.",
         color=EMBED_COLOR,
     )
-    if catalog.po_overview:
-        embed.add_field(
-            name="Alle Dokumente",
-            value=f"[Prüfungsordnungen & Modulhandbücher]({catalog.po_overview})",
-            inline=False,
-        )
-    return embed
 
 
 class Links(commands.Cog):
